@@ -26,12 +26,81 @@ async function run() {
   try {
     // Connect the client to the server	(optional starting in v4.7)
     await client.connect();
+    const jobCollection=  client.db('jobHuntDB').collection('jobs')
+
+
+    app.get('/jobs', async(req,res)=>{
+        const cursor= jobCollection.find()
+        const result= await cursor.toArray()
+        res.send(result)
+      })
+
+
+
+      app.get('/jobs/:id', async(req, res)=>{
+        const id= req.params.id
+        
+        const query= {_id: new ObjectId(id)}
+        const result =await jobCollection.findOne(query)
+        res.send(result)
+  
+      })  
+
+
+
+      app.post('/jobs', async(req,res)=>{
+        const newSpot= req.body;
+        console.log(newSpot)
+        const result =await jobCollection.insertOne(newSpot)
+        res.send(result)
+      })
+
+
+
+
+      app.put('/jobs/:id', async(req, res)=>{
+  
+        const id= req.params.id
+      
+        console.log('Received ID:', id); 
+      
+      const filter= {_id: new ObjectId(id)}
+      
+      const options= {upsert:true}
+      const updateJob= req.body
+      const Job={
+        $set:{
+           photo: updateJob.photo,
+           
+           email: updateJob.email,
+           name: updateJob.name
+           
+           
+        }
+      }
+      
+      const result= await jobCollection.updateOne(filter, Spot, options)
+      
+      res.send(result)
+     
+
+    })
+
+    app.delete('/jobs/:id', async(req,res)=>{
+        const id= String(req.params.id)
+        
+  
+        const query= {_id: new ObjectId(id)}
+        
+        const result= await jobCollection.deleteOne(query)
+        res.send(result)
+      })
     // Send a ping to confirm a successful connection
     await client.db("admin").command({ ping: 1 });
     console.log("Pinged your deployment. You successfully connected to MongoDB!");
   } finally {
     // Ensures that the client will close when you finish/error
-    await client.close();
+    //await client.close();
   }
 }
 run().catch(console.dir);
