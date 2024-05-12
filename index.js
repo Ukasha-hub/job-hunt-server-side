@@ -49,10 +49,18 @@ async function run() {
 
 
       app.post('/jobs', async(req,res)=>{
-        const newSpot= req.body;
-        console.log(newSpot)
-        const result =await jobCollection.insertOne(newSpot)
+        const newJob= req.body;
+        console.log(newJob)
+        const result =await jobCollection.insertOne(newJob)
+
+       // const jobId = result.insertedId; // Get the _id of the newly inserted document
+        //const incrementResult = await jobCollection.updateOne(
+          //  { _id: jobId },
+           // { $inc: { applicant: 1 } }
+       // );
+         
         res.send(result)
+        
       })
 
 
