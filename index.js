@@ -28,6 +28,7 @@ async function run() {
     // Connect the client to the server	(optional starting in v4.7)
     await client.connect();
     const jobCollection=  client.db('jobHuntDB').collection('jobs')
+    const appliedCollection=  client.db('jobHuntDB').collection('applied')
 
 
     app.get('/jobs', async(req,res)=>{
@@ -63,7 +64,21 @@ async function run() {
         res.send(result)
         
       })
+    
+      app.post('/applied', async(req,res)=>{
+        const newApplied= req.body;
+        console.log(newApplied)
+        const result =await appliedCollection.insertOne(newApplied)
 
+        const jobId = result.insertedId; // Get the _id of the newly inserted document
+        const incrementResult = await jobCollection.updateOne(
+            { _id: jobId },
+            { $inc: { applicant: 1 } }
+        );
+         
+        res.send(result)
+        
+      })
 
 
 
