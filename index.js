@@ -109,6 +109,7 @@ async function run() {
         const result =await appliedCollection.insertOne(newApplied)
 
         const jobId = result.insertedId; // Get the _id of the newly inserted document
+        
         const incrementResult = await jobCollection.updateOne(
             { _id: jobId },
             { $inc: { applicant: 1 } }
@@ -138,8 +139,9 @@ async function run() {
            category: updateJob.category,
            salary: updateJob.salary,
            description: updateJob.description,
-           post: updateJob.post,
+          
            deadline: updateJob.deadline,
+           applicant: updateJob.applicant,
          
            
            
