@@ -38,13 +38,29 @@ async function run() {
       })
 
 
+      app.get('/jobs/email/:email', async(req,res)=>{
+        const email = req.params.email;
+            
+        const cursor = jobCollection.find({ email: email });
+        
+      
+        const result = await cursor.toArray();
+        
+      
+        res.json(result);
+      })
+
+
 
       app.get('/jobs/:id', async(req, res)=>{
         const id= req.params.id
-        console.log(id)
+        console.log('iD number:',id)
         const query= {_id: new ObjectId(id)}
         const result =await jobCollection.findOne(query)
         res.send(result)
+
+
+        
   
       }) 
 
@@ -54,11 +70,19 @@ async function run() {
         res.send(result)
   
       })  
+
+      
       
       app.get('/applied/:email', async(req, res)=>{
-        const cursor= appliedCollection.find()
-        const result= await cursor.toArray()
-        res.send(result)
+        const email = req.params.email;
+            
+        const cursor = appliedCollection.find({ email: email });
+        
+      
+        const result = await cursor.toArray();
+        
+      
+        res.json(result);
   
       })  
 
