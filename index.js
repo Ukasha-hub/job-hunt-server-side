@@ -46,6 +46,20 @@ async function run() {
         const result =await jobCollection.findOne(query)
         res.send(result)
   
+      }) 
+
+      app.get('/applied', async(req, res)=>{
+        const cursor= appliedCollection.find()
+        const result= await cursor.toArray()
+        res.send(result)
+  
+      })  
+      
+      app.get('/applied/:email', async(req, res)=>{
+        const cursor= appliedCollection.find()
+        const result= await cursor.toArray()
+        res.send(result)
+  
       })  
 
 
