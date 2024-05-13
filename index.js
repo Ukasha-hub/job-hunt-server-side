@@ -134,14 +134,19 @@ async function run() {
         $set:{
            photo: updateJob.photo,
            
-           email: updateJob.email,
-           name: updateJob.name
+           job: updateJob.job,
+           category: updateJob.category,
+           salary: updateJob.salary,
+           description: updateJob.description,
+           post: updateJob.post,
+           deadline: updateJob.deadline,
+         
            
            
         }
       }
       
-      const result= await jobCollection.updateOne(filter, Spot, options)
+      const result= await jobCollection.updateOne(filter, Job, options)
       
       res.send(result)
      
