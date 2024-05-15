@@ -127,8 +127,13 @@ async function run() {
 
       
       
-      app.get('/applied/:email', async(req, res)=>{
+      app.get('/applied/:email' , logger, verifyToken, async(req, res)=>{
         const email = req.params.email;
+
+        console.log('token owner: ', req.user)
+        if(req.user.email!==email){
+             return res.status(403).send({message: 'forbidded access'})
+        }
             
         const cursor = appliedCollection.find({ email: email });
         
